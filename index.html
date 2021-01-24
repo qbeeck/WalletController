@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BudgetControl</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Karla&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"
+      integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="budget-app">
+      <div class="main-container">
+        <div class="main-container__header">
+          <div class="header__date">
+            <span class="month">JANUARY</span>
+            <span class="year">2021</span>
+          </div>
+          <div class="header__counter">
+            <span class="main-counter">500</span>
+          </div>
+          <div class="header__subtitle">
+            <span class="subtitle-text">AVAILABLE BUDGET</span>
+          </div>
+        </div>
+
+        <div class="main-container__panel">
+          <div class="income">
+            <div class="income__title">
+              <span>INCOME</span>
+              <i class="fas fa-arrow-circle-down"></i>
+            </div>
+            <div class="income__subtitle">
+              <span class="income-counter">+ 0.00</span>
+            </div>
+          </div>
+          <div class="changer">
+            <label class="changer__switch">
+              <input type="checkbox" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="expenses">
+            <div class="expenses__title">
+              <span>EXPENSES</span>
+              <i class="fas fa-arrow-circle-up"></i>
+            </div>
+            <div class="expenses__subtitle">
+              <span class="expenses-counter">+ 0.00</span>
+              <span class="expenses-percentage">---</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="main-container__input-panel">
+          <div class="input-panel__description">
+            <input
+              type="text"
+              class="add__description"
+              id="description"
+              placeholder="Add a Description"
+            />
+            <label for="description" class="form-label"
+              >Add a Description</label
+            >
+          </div>
+          <div class="input-panel__value">
+            <input
+              type="number"
+              class="add__value"
+              id="value"
+              placeholder="Value"
+            />
+            <label for="value" class="form-label">Value</label>
+          </div>
+          <div class="input-panel__submit-button">
+            <button class="submit-button">
+              <i class="fas fa-check"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-container">
+        <div class="list-container__item">
+          <div class="item__details">
+            <div class="name">123456</div>
+          </div>
+          <div class="item__value">
+            <div class="value__number">
+              <span>-123</span>
+            </div>
+            <div class="value__percentage">
+              <span>---</span>
+            </div>
+          </div>
+          <div class="item__delete-button">
+            <button class="delete-button">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="list-container__item">
+          <div class="item__details">
+            <div class="name">123456</div>
+          </div>
+          <div class="item__value">
+            <div class="value__number">
+              <span>-123</span>
+            </div>
+            <div class="value__percentage">
+              <span>---</span>
+            </div>
+          </div>
+          <div class="item__delete-button">
+            <button class="delete-button">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="list-container__item">
+          <div class="item__details">
+            <div class="name">123456</div>
+          </div>
+          <div class="item__value">
+            <div class="value__number">
+              <span>-123</span>
+            </div>
+            <div class="value__percentage">
+              <span>-15%</span>
+            </div>
+          </div>
+          <div class="item__delete-button">
+            <button class="delete-button">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
