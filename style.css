@@ -18,11 +18,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: -webkit-linear-gradient(135deg, #09203f 10%, #537895 100%); 
+  background-image: linear-gradient(135deg, #09203f 10%, #537895 100%);
 }
 .budget-app {
   width: 100%;
   min-height: 100vh;
-  background-color: azure;
 }
 .main-container {
   padding: 4rem;
@@ -37,6 +38,7 @@ body {
   flex-direction: column;
   align-items: center;
   margin-bottom: 3rem;
+  color: #ffffff; 
 }
 .header__date {
   font-size: 1.5rem;
@@ -68,6 +70,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #45b945;
 }
 .changer {
   display: flex;
@@ -91,9 +94,10 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #45b945;
   -webkit-transition: 0.4s;
   transition: 0.4s;
+
 }
 .slider:before {
   position: absolute;
@@ -107,10 +111,10 @@ body {
   transition: 0.4s;
 }
 .changer__switch input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #da4040;
 }
 .changer__switch input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+  box-shadow: 0 0 1px #da4040;
 }
 .slider.round {
   border-radius: 34px;
@@ -127,6 +131,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #da4040;
 }
 .expenses__subtitle {
   display: flex;
@@ -156,7 +161,10 @@ body {
   background-color: transparent;
   border: none;
   transition: all 0.3s;
-  border-bottom: 2px solid rgba(98, 193, 93, 0.6);
+  border-bottom: 2px solid #45b945;
+}
+.red-border {
+  border-color: #da4040 !important;
 }
 .input-panel__value {
   display: flex;
@@ -170,7 +178,7 @@ body {
   background-color: transparent;
   border: none;
   transition: all 0.3s;
-  border-bottom: 2px solid rgba(98, 193, 93, 0.6);
+  border-bottom: 2px solid #45b945;
 }
 .input-panel__submit-button {
   display: flex;
@@ -178,10 +186,15 @@ body {
   align-items: center;
 }
 .submit-button {
-  font-size: 1.2rem;
+  color: #45b945;
+  font-size: 2rem;
   border: none;
+  transition: all 0.3s;
   background-color: transparent;
   cursor: pointer;
+}
+.red {
+  color: #da4040 !important;
 }
 /* ======================================== */
 /* List-container */
@@ -229,7 +242,7 @@ body {
 }
 .delete-button {
   display: none;
-  color: red;
+  color: #da4040;
   margin-left: 10px;
   cursor: pointer;
   border: none;
