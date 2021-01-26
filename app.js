@@ -1,34 +1,29 @@
 // BUDGET MODEL
 const budgetModel = (() => {
-  class Income {
-    constructor(id, description, value) {
-      this.id = id;
-      this.description = description;
-      this.value = value;
-    }
-  }
+  const Expense = function (id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+    this.percentage = -1;
+  };
 
-  class Expense {
-    constructor(id, description, value) {
-      this.id = id;
-      this.description = description;
-      this.value = value;
+  Expense.prototype.calcPercentage = function (totalIncome) {
+    if (totalIncome > 0) {
+      this.percentage = Math.round((this.value / totalIncome) * 100);
+    } else {
       this.percentage = -1;
     }
+  };
 
-    calcPercentage(totalIncome) {
-      if (totalIncome > 0) {
-        this.percentage = Math.round((this.value / totalIncome) * 100);
-      } else {
-        this.percentage = -1;
-      }
-    }
+  Expense.prototype.getPercentage = function () {
+    return this.percentage;
+  };
 
-    get percentageInfo() {
-      return this.percentage;
-    }
-  }
-
+  const Income = function (id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  };
   const data = {
     allItems: {
       income: [],
@@ -42,6 +37,13 @@ const budgetModel = (() => {
     percentageUsed: -1,
   };
 
+  const calculateTotal = (type) => {
+    let sum = 0;
+    data.allItems[type].forEach(function(cur) {
+      sum += cur.value;
+    });
+    data.totals[type] = sum;
+  };
   return {
     addItem(type, desc, val) {
       let newItem;
@@ -60,6 +62,39 @@ const budgetModel = (() => {
 
       data.allItems[type].push(newItem);
       return newItem;
+    },
+    calculateBudget() {
+      calculateTotal("income");
+      calculateTotal("expense");
+
+      data.budget = data.totals.income - data.totals.expense;
+
+      if (data.totals.income > 0) {
+        data.percentageUsed = Math.round(
+          (data.totals.expense / data.totals.income) * 100
+        );
+      } else {
+        data.percentageUsed = -1;
+      }
+    },
+    calculatePercentages() {
+      data.allItems.expense.forEach(function(cur) {
+        cur.calcPercentage(data.totals.income);
+      });
+    },
+    getPercentages() {
+      let allPerc = data.allItems.expense.map(function(cur) {
+        return cur.getPercentage();
+      });
+      return allPerc;
+    },
+    getBudget() {
+      return {
+        budget: data.budget,
+        totalIncome: data.totals.income,
+        totalExpense: data.totals.expense,
+        percentage: data.percentageUsed
+      };
     },
   };
 })();
@@ -84,14 +119,14 @@ const budgetView = (() => {
     let numSplit, int, dec;
     num = Math.abs(number);
     num = num.toFixed(2);
-    numSplit = num.split('.');
+    numSplit = num.split(".");
     int = numSplit[0];
     if (int.length > 3) {
-      int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
+      int = int.substr(0, int.length - 3) + "," + int.substr(int.length - 3, 3);
     }
     dec = numSplit[1];
 
-    return (type === 'expense' ? '-' : '+') + ' ' + int + '.' + dec;
+    return (type === "expense" ? "-" : "+") + " " + int + "." + dec;
   };
 
   return {
@@ -147,6 +182,17 @@ const budgetView = (() => {
         `;
       }
       document.querySelector(element).insertAdjacentHTML("afterbegin", html);
+    },
+    clearFields() {
+      let fields, fieldsArr;
+      fields = document.querySelectorAll(
+        DOMStrings.inputDescription + ", " + DOMStrings.inputValue
+      );
+      fieldsArr = Array.prototype.slice.call(fields);
+
+      fields.forEach((current, index, array) => (current.value = ""));
+
+      fieldsArr[0].focus();
     },
     displayMonth() {
       let now, year, month, months;
@@ -206,6 +252,17 @@ const budgetView = (() => {
       });
       document.querySelector(DOMStrings.inputBtn).classList.toggle("red");
     },
+    displayPercentages(percentages) {
+      let fields = document.querySelectorAll(DOMStrings.expensesPercLabel);
+
+      Array.prototype.forEach.call(fields, function(current, index) {
+        if (percentages[index] > 0) {
+          current.textContent = percentages[index] + '%';
+        } else {
+          current.textContent = '---';
+        }
+      });
+    },
     // return required classnames to controller
     getDOMStrings() {
       return DOMStrings;
@@ -214,7 +271,7 @@ const budgetView = (() => {
 })();
 // BUDGET CONTROLLER
 const budgetController = ((bModel, bView) => {
-  // all event listeners 
+  // all event listeners
   const setupEventListeners = () => {
     const DOM = bView.getDOMStrings();
     document.querySelector(DOM.inputBtn).addEventListener("click", ctrlAddItem);
@@ -231,17 +288,31 @@ const budgetController = ((bModel, bView) => {
       .querySelector(DOM.inputType)
       .addEventListener("change", bView.changedTypeToggle);
   };
+  // update main counter 
+  const updateBudget = () => {
+    bModel.calculateBudget();
+    let budget = bModel.getBudget();
+    bView.displayBudget(budget);
+  };
+  // update perc under all expenses item
+  const updatePercentages = () => {
+    bModel.calculatePercentages();
+    let percentages = bModel.getPercentages();
+    console.log(percentages, "lolol");
+    bView.displayPercentages(percentages);
+  };
+
   // add Item
   const ctrlAddItem = () => {
     let input, newItem;
     input = bView.getInput();
-    console.log(input);
 
     if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
       newItem = bModel.addItem(input.type, input.description, input.value);
-      console.log(newItem, "елем");
-
       bView.addListItem(newItem, input.type);
+      bView.clearFields();
+      updateBudget();
+      updatePercentages();
     }
   };
 
