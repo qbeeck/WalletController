@@ -79,7 +79,7 @@ body {
   width: 60px;
   height: 34px;
 }
-.changer__switch input { 
+.changer__switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -92,8 +92,8 @@ body {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 .slider:before {
   position: absolute;
@@ -103,14 +103,14 @@ body {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 .changer__switch input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 .changer__switch input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 .slider.round {
   border-radius: 34px;
@@ -197,6 +197,10 @@ body {
   padding: 2rem 1rem;
   align-items: center;
 }
+.name {
+  max-width: 650px;
+  word-wrap: break-word;
+}
 .item__details {
   flex: 1;
   font-size: 1.7rem;
@@ -232,7 +236,12 @@ body {
   font-size: 1.7rem;
   background-color: transparent;
 }
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 900px) {
+  .name {
+    max-width: 550px;
+  }
+}
+@media only screen and (max-width: 780px) {
   html {
     font-size: 80%;
   }
@@ -241,6 +250,9 @@ body {
   }
   .input-panel__value {
     width: 80px;
+  }
+  .name {
+    max-width: 400px;
   }
   .income__title i {
     display: none;
@@ -257,7 +269,44 @@ body {
     transform: translateX(0px);
   }
 }
+@media only screen and (max-width: 620px) {
+  .name {
+    max-width: 300px;
+  }
+}
+@media only screen and (max-width: 520px) {
+  .name {
+    max-width: 220px;
+  }
+}
+@media only screen and (max-width: 450px) {
+  html {
+    font-size: 70%;
+  }
+  .main-container__input-panel {
+    width: 10%;
+  }
+  .input-panel__value {
+    width: 45px;
+  }
+  .name {
+    max-width: 150px;
+  }
+  .income__title i {
+    display: none;
+  }
+  .expenses__title i {
+    display: none;
+  }
 
+  .delete-button {
+    display: flex !important;
+  }
+
+  .list-container__item:hover .item__value {
+    transform: translateX(0px);
+  }
+}
 @media only screen and (max-width: 300px) {
   html {
     font-size: 70%;
@@ -267,6 +316,9 @@ body {
   }
   .input-panel__value {
     width: 45px;
+  }
+  .name {
+    max-width: 140px;
   }
   .income__title i {
     display: none;
