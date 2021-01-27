@@ -24,7 +24,7 @@ const budgetModel = (() => {
     this.description = description;
     this.value = value;
   };
-
+  // all data
   const data = {
     allItems: {
       income: [],
@@ -40,12 +40,11 @@ const budgetModel = (() => {
 
   const calculateTotal = (type) => {
     let sum = 0;
-    data.allItems[type].forEach(function(cur) {
+    data.allItems[type].forEach(function (cur) {
       sum += cur.value;
     });
     data.totals[type] = sum;
   };
-
 
   return {
     addItem(type, desc, val) {
@@ -69,7 +68,8 @@ const budgetModel = (() => {
 
     deleteItem(type, id) {
       let ids, index;
-      ids = data.allItems[type].map(function(current) {
+
+      ids = data.allItems[type].map(function (current) {
         return current.id;
       });
 
@@ -96,13 +96,13 @@ const budgetModel = (() => {
     },
 
     calculatePercentages() {
-      data.allItems.expense.forEach(function(cur) {
+      data.allItems.expense.forEach(function (cur) {
         cur.calcPercentage(data.totals.income);
       });
     },
 
     getPercentages() {
-      let allPerc = data.allItems.expense.map(function(cur) {
+      let allPerc = data.allItems.expense.map(function (cur) {
         return cur.getPercentage();
       });
       return allPerc;
@@ -113,10 +113,25 @@ const budgetModel = (() => {
         budget: data.budget,
         totalIncome: data.totals.income,
         totalExpense: data.totals.expense,
-        percentage: data.percentageUsed
+        percentage: data.percentageUsed,
       };
     },
 
+    // local storage
+    storeData() {
+      localStorage.setItem("data", JSON.stringify(data));
+    },
+
+    getStoredData() {
+      localData = JSON.parse(localStorage.getItem("data"));
+      return localData;
+    },
+
+    updateData(StoredData) {
+      data.totals = StoredData.totals;
+      data.budget = StoredData.budget;
+      data.percentage = StoredData.percentage;
+    },
   };
 })();
 
@@ -136,7 +151,7 @@ const budgetView = (() => {
     expensesPercLabel: ".percentage-value-item",
     dateLabel: ".date-summary",
   };
-
+  // format numbers from inputs
   const formatNumber = (number, type) => {
     let numSplit, int, dec;
     num = Math.abs(number);
@@ -151,19 +166,18 @@ const budgetView = (() => {
     return (type === "expense" ? "-" : "+") + " " + int + "." + dec;
   };
 
-
   return {
+    // get values of inputs
     getInput() {
       return {
         type: document.querySelector(DOMStrings.inputType).checked
           ? "expense"
           : "income",
         description: document.querySelector(DOMStrings.inputDescription).value,
-        value,
         value: parseFloat(document.querySelector(DOMStrings.inputValue).value),
       };
     },
-
+    // add element to list-container
     addListItem(obj, type) {
       let html, element;
 
@@ -207,12 +221,12 @@ const budgetView = (() => {
       }
       document.querySelector(element).insertAdjacentHTML("afterbegin", html);
     },
-
+    // delete element from list-container
     deleteListItem(selectorID) {
       let el = document.getElementById(selectorID);
       el.parentNode.removeChild(el);
     },
-
+    // clear all fields after adding element
     clearFields() {
       let fields, fieldsArr;
       fields = document.querySelectorAll(
@@ -224,7 +238,7 @@ const budgetView = (() => {
 
       fieldsArr[0].focus();
     },
-
+    // show current month and year in header
     displayMonth() {
       let now, year, month, months;
       now = new Date();
@@ -247,7 +261,7 @@ const budgetView = (() => {
       document.querySelector(DOMStrings.dateLabel).textContent =
         months[month] + " " + year;
     },
-
+    // display budgets counters
     displayBudget(obj) {
       let type;
       obj.budget > 0 ? (type = "income") : (type = "expense");
@@ -270,7 +284,7 @@ const budgetView = (() => {
         document.querySelector(DOMStrings.percentageLabel).textContent = "---";
       }
     },
-
+    // toggle styles for inputs 
     changedTypeToggle() {
       let fields = document.querySelectorAll(
         DOMStrings.inputType +
@@ -285,22 +299,22 @@ const budgetView = (() => {
       });
       document.querySelector(DOMStrings.inputBtn).classList.toggle("red");
     },
-
+    // display percentages
     displayPercentages(percentages) {
       let fields = document.querySelectorAll(DOMStrings.expensesPercLabel);
 
-      Array.prototype.forEach.call(fields, function(current, index) {
+      Array.prototype.forEach.call(fields, function (current, index) {
         if (percentages[index] > 0) {
-          current.textContent = percentages[index] + '%';
+          current.textContent = percentages[index] + "%";
         } else {
-          current.textContent = '---';
+          current.textContent = "---";
         }
       });
     },
     // return required classnames to controller
     getDOMStrings() {
       return DOMStrings;
-    }
+    },
   };
 })();
 
@@ -323,9 +337,32 @@ const budgetController = ((bModel, bView) => {
       .querySelector(DOM.inputType)
       .addEventListener("change", bView.changedTypeToggle);
   };
-  
+  // update database from localStorage
+  const loadData = () => {
+    let storedData, newIncItem, newExpItem;
 
-  // update main counter 
+    storedData = bModel.getStoredData();
+
+    if (storedData) {
+      bModel.updateData(storedData);
+
+      storedData.allItems.income.forEach(function (cur) {
+        newIncItem = bModel.addItem("income", cur.description, cur.value);
+        bView.addListItem(newIncItem, "income");
+      });
+
+      storedData.allItems.expense.forEach(function (cur) {
+        newExpItem = bModel.addItem("expense", cur.description, cur.value);
+        bView.addListItem(newExpItem, "expense");
+      });
+
+      budget = bModel.getBudget();
+      bView.displayBudget(budget);
+
+      updatePercentages();
+    }
+  };
+  // update main counter
   const updateBudget = () => {
     bModel.calculateBudget();
     let budget = bModel.getBudget();
@@ -335,69 +372,43 @@ const budgetController = ((bModel, bView) => {
   const updatePercentages = () => {
     bModel.calculatePercentages();
     let percentages = bModel.getPercentages();
-    console.log(percentages, "lolol");
     bView.displayPercentages(percentages);
   };
-
   // add Item
   const ctrlAddItem = () => {
     let input, newItem;
-
-    // 1. get the field input data
     input = bView.getInput();
 
-    //check if there is data on fields
-    if (input.description !== '' && !isNaN(input.value) && input.value > 0) {
-      // 2. Add the item to the budget controller
+    if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
       newItem = bModel.addItem(input.type, input.description, input.value);
-
-      // 3. Add the item to the UI
       bView.addListItem(newItem, input.type);
-
-      // 4. Clear the fields
       bView.clearFields();
-
-      // 5. Calculate and update budget
       updateBudget();
-
-      // 6. Calculate and update the percentages
       updatePercentages();
+      bModel.storeData();
+    }
+  };
+  // delete Item
+  const ctrlDeleteItem = (event) => {
+    let itemID, splitID, type, ID;
 
-      // 7. save to local storage
+    itemID = event.target.parentNode.id;
+    if (itemID) {
+      splitID = itemID.split("-");
+      type = splitID[0];
+      ID = parseInt(splitID[1]);
+      bModel.deleteItem(type, ID);
+      bView.deleteListItem(itemID);
+      updateBudget();
+      updatePercentages();
+      bModel.storeData();
     }
   };
 
-  const ctrlDeleteItem = function(event) {
-    let itemID, splitID, type, ID;
-    console.log(event);
-    itemID = event.target.parentNode.id;
-    console.log(itemID);
-    if (itemID) {
-      splitID = itemID.split('-');
-      type = splitID[0];
-      ID = parseInt(splitID[1]);
-
-      // 1. Delete the item from data structure
-      bModel.deleteItem(type, ID);
-
-      // 2. Delete the item from UI
-      bView.deleteListItem(itemID);
-
-      // 3. Update and show new budget
-      updateBudget();
-
-      // 4. Calculate and update the percentages
-      updatePercentages();
-
-      // 5. save to local storage
-    }
-  }
-
-
   return {
-    // public finction, setup event listeners and start app
+    // public function, setup event listeners and start app
     init() {
-      console.log("app started");
+      console.log("good luck / app started");
       bView.displayMonth();
       bView.displayBudget({
         budget: 0,
@@ -406,11 +417,9 @@ const budgetController = ((bModel, bView) => {
         percentage: -1,
       });
       setupEventListeners();
+      loadData();
     },
   };
 })(budgetModel, budgetView);
 
 budgetController.init();
-
-
-
