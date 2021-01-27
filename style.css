@@ -18,8 +18,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: -webkit-linear-gradient(135deg, #09203f 10%, #537895 100%); 
-  background-image: linear-gradient(135deg, #09203f 10%, #537895 100%);
+  background-image: -webkit-linear-gradient(135deg, #09203f 10%, #22333f 100%); 
+  background-image: linear-gradient(135deg, #09203f 10%, #22333f 100%);
 }
 .budget-app {
   width: 100%;
@@ -159,6 +159,7 @@ body {
   padding: 5px 10px;
   font-size: 1.2rem;
   background-color: transparent;
+  color: #45b945;
   border: none;
   transition: all 0.3s;
   border-bottom: 2px solid #45b945;
@@ -178,6 +179,7 @@ body {
   background-color: transparent;
   border: none;
   transition: all 0.3s;
+  color:#45b945;
   border-bottom: 2px solid #45b945;
 }
 .input-panel__submit-button {
@@ -209,15 +211,16 @@ body {
   display: flex;
   padding: 2rem 1rem;
   align-items: center;
-}
-.name {
-  max-width: 650px;
-  word-wrap: break-word;
+  color: #ffffff;
 }
 .item__details {
   flex: 1;
   font-size: 1.7rem;
   font-weight: 500;
+}
+.name {
+  max-width: 650px;
+  word-wrap: break-word;
 }
 .item__value {
   font-size: 1.7rem;
@@ -227,12 +230,6 @@ body {
   text-align: right;
   line-height: 0.7;
 }
-.list-container__item:hover .delete-button {
-  display: flex;
-}
-.list-container__item:hover .item__value {
-  transform: translateX(-10px);
-}
 .value__percentage span {
   font-size: 1.2rem;
   font-weight: 300;
@@ -240,111 +237,27 @@ body {
 .item__delete-button {
   border: none;
 }
+.income-style {
+  color: #45b945;
+}
+.expense-style {
+  color: #da4040;
+}
 .delete-button {
   display: none;
   color: #da4040;
   margin-left: 10px;
   cursor: pointer;
   border: none;
-  font-size: 1.7rem;
+  font-size: 2rem;
   background-color: transparent;
 }
-@media only screen and (max-width: 900px) {
-  .name {
-    max-width: 550px;
-  }
+.delete-button i {
+  pointer-events: none;
 }
-@media only screen and (max-width: 780px) {
-  html {
-    font-size: 80%;
-  }
-  .main-container__input-panel {
-    width: 10%;
-  }
-  .input-panel__value {
-    width: 80px;
-  }
-  .name {
-    max-width: 400px;
-  }
-  .income__title i {
-    display: none;
-  }
-  .expenses__title i {
-    display: none;
-  }
-
-  .delete-button {
-    display: flex !important;
-  }
-
-  .list-container__item:hover .item__value {
-    transform: translateX(0px);
-  }
+.list-container__item:hover .delete-button {
+  display: flex;
 }
-@media only screen and (max-width: 620px) {
-  .name {
-    max-width: 300px;
-  }
-}
-@media only screen and (max-width: 520px) {
-  .name {
-    max-width: 220px;
-  }
-}
-@media only screen and (max-width: 450px) {
-  html {
-    font-size: 70%;
-  }
-  .main-container__input-panel {
-    width: 10%;
-  }
-  .input-panel__value {
-    width: 45px;
-  }
-  .name {
-    max-width: 150px;
-  }
-  .income__title i {
-    display: none;
-  }
-  .expenses__title i {
-    display: none;
-  }
-
-  .delete-button {
-    display: flex !important;
-  }
-
-  .list-container__item:hover .item__value {
-    transform: translateX(0px);
-  }
-}
-@media only screen and (max-width: 300px) {
-  html {
-    font-size: 70%;
-  }
-  .main-container__input-panel {
-    width: 10%;
-  }
-  .input-panel__value {
-    width: 45px;
-  }
-  .name {
-    max-width: 140px;
-  }
-  .income__title i {
-    display: none;
-  }
-  .expenses__title i {
-    display: none;
-  }
-
-  .delete-button {
-    display: flex !important;
-  }
-
-  .list-container__item:hover .item__value {
-    transform: translateX(0px);
-  }
+.list-container__item:hover .item__value {
+  transform: translateX(-10px);
 }
