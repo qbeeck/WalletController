@@ -18,7 +18,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: -webkit-linear-gradient(135deg, #09203f 10%, #22333f 100%); 
+  background-image: -webkit-linear-gradient(135deg, #09203f 10%, #22333f 100%);
   background-image: linear-gradient(135deg, #09203f 10%, #22333f 100%);
 }
 .budget-app {
@@ -38,7 +38,7 @@ body {
   flex-direction: column;
   align-items: center;
   margin-bottom: 3rem;
-  color: #ffffff; 
+  color: #ffffff;
 }
 .header__date {
   font-size: 1.5rem;
@@ -46,12 +46,12 @@ body {
   margin-bottom: 0.5rem;
 }
 .header__counter {
-  font-size: 5.2rem;
+  font-size: 4rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
 }
 .header__subtitle {
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: 500;
 }
 /* ======================================== */
@@ -62,7 +62,7 @@ body {
   margin: 0 auto;
   display: flex;
   justify-content: space-evenly;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: 900;
   margin-bottom: 2rem;
 }
@@ -97,7 +97,6 @@ body {
   background-color: #45b945;
   -webkit-transition: 0.4s;
   transition: 0.4s;
-
 }
 .slider:before {
   position: absolute;
@@ -157,7 +156,7 @@ body {
 }
 .input-panel__description input {
   padding: 5px 10px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   background-color: transparent;
   color: #45b945;
   border: none;
@@ -169,17 +168,17 @@ body {
 }
 .input-panel__value {
   display: flex;
-  width: 150px;
+  width: 200px;
   flex-direction: column;
   margin-right: 1.5rem;
 }
 .input-panel__value input {
   padding: 5px 10px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   background-color: transparent;
   border: none;
   transition: all 0.3s;
-  color:#45b945;
+  color: #45b945;
   border-bottom: 2px solid #45b945;
 }
 .input-panel__submit-button {
@@ -189,7 +188,7 @@ body {
 }
 .submit-button {
   color: #45b945;
-  font-size: 2rem;
+  font-size: 2.5rem;
   border: none;
   transition: all 0.3s;
   background-color: transparent;
@@ -262,3 +261,69 @@ body {
   transform: translateX(-10px);
 }
 
+@media only screen and (max-width: 800px) {
+  html {
+    font-size: 110%;
+  }
+  .main-container__panel {
+    width: 100%;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between !important;
+  }
+  .subtitle-text {
+    font-size: 1.5rem;
+  }
+  .main-counter {
+    font-size: 2.5rem;
+  }
+  .input-panel__value {
+    width: 150px;
+  }
+  .input-panel__description input {
+    font-size: 1.2rem;
+  }
+  .input-panel__value input {
+    font-size: 1.2rem;
+  }
+  .delete-button {
+    display: flex !important;
+    margin-left: 1rem;
+  }
+  .name {
+    max-width: 150px;
+  }
+  .item__value {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .panel__item:hover .panel__item__value {
+    transform: translateX(0px);
+  }
+}
+@media only screen and (max-width: 550px) {
+  .main-container__panel {
+    font-size: 1.3rem;
+  }
+  .header__counter {
+    font-size: 2rem;
+  }
+  .submit-button i {
+    font-size: 2rem;
+  }
+  .subtitle-text {
+    font-size: 1rem;
+  }
+  .expenses__title i {
+    display: none;
+  }
+  .input-panel__description {
+    width: 200px;
+  }
+  .input-panel__value {
+    width: 120px;
+  }
+  .income__title i {
+    display: none;
+  }
+}
